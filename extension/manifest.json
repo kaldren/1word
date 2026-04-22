@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "1word",
+  "description": "Select a word, get an AI-powered short definition, and see saved words highlighted across the web.",
+  "version": "1.0.0",
+  "icons": {
+    "16": "16.png",
+    "32": "32.png",
+    "48": "48.png",
+    "64": "64.png",
+    "128": "128.png"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "1word",
+    "default_icon": {
+      "16": "16.png",
+      "32": "32.png",
+      "48": "48.png",
+      "64": "64.png",
+      "128": "128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/index.ts"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": ["storage", "identity"],
+  "host_permissions": ["<all_urls>"]
+}

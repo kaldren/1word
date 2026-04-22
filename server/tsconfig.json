@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types"],
+    "lib": ["ES2022"],
+    "noEmit": true,
+    "paths": {
+      "@vocab/shared": ["../shared/src/types.ts"]
+    }
+  },
+  "include": ["src/**/*"]
+}

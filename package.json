@@ -1,0 +1,23 @@
+{
+  "name": "browser-ext",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "shared",
+    "extension",
+    "server"
+  ],
+  "scripts": {
+    "dev:server": "npm run dev -w server",
+    "dev:ext": "npm run dev -w extension",
+    "build:ext": "npm run build -w extension",
+    "build:ext:firefox": "npm run build:firefox -w extension",
+    "build:shared": "npm run build -w shared",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "db:migrate:local": "npm run db:migrate:local -w server",
+    "db:migrate:remote": "npm run db:migrate:remote -w server"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
