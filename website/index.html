@@ -3,121 +3,243 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1word — AI definitions as you read</title>
+  <title>1word — Never get stuck on a word again</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: #111;
+      color: #111827;
       background: #fff;
     }
-    a { color: #16a34a; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a { color: inherit; text-decoration: none; }
 
-    header {
-      border-bottom: 1px solid #e5e7eb;
-      padding: 0 24px;
-    }
+    /* Header */
+    header { border-bottom: 1px solid #e5e7eb; padding: 0 24px; }
     .header-inner {
-      max-width: 720px;
+      max-width: 900px;
       margin: 0 auto;
-      height: 56px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .logo { font-weight: 700; font-size: 18px; letter-spacing: -0.5px; }
-    .logo span { color: #22c55e; }
-    nav { display: flex; gap: 24px; font-size: 14px; }
+    .logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
+    .logo img { width: 30px; height: 30px; }
+    .logo-text em { color: #ef4444; font-style: normal; }
+    nav a { font-size: 14px; color: #6b7280; margin-left: 24px; }
+    nav a:hover { color: #111; }
 
+    /* Hero */
     .hero {
-      padding: 80px 24px 72px;
+      background: #0f172a;
+      color: #fff;
+      padding: 100px 24px 88px;
       text-align: center;
+    }
+    .eyebrow {
+      display: inline-block;
+      background: rgba(239,68,68,.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239,68,68,.3);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 100px;
+      margin-bottom: 32px;
     }
     .hero h1 {
-      font-size: clamp(32px, 5vw, 52px);
+      font-size: clamp(38px, 6vw, 64px);
       font-weight: 800;
-      letter-spacing: -1px;
-      line-height: 1.15;
-      margin-bottom: 20px;
+      letter-spacing: -2px;
+      line-height: 1.08;
+      margin-bottom: 24px;
     }
-    .hero h1 em { color: #22c55e; font-style: normal; }
+    .hero h1 em { color: #f87171; font-style: normal; }
     .hero p {
-      font-size: 18px;
-      color: #4b5563;
-      max-width: 520px;
-      margin: 0 auto 36px;
+      font-size: 19px;
+      color: #94a3b8;
+      max-width: 480px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
     }
-    .btn {
-      display: inline-block;
-      background: #22c55e;
-      color: #fff;
+    .browser-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .browser-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 22px;
+      border-radius: 9px;
+      font-size: 14px;
       font-weight: 600;
-      font-size: 15px;
-      padding: 12px 28px;
-      border-radius: 8px;
-      transition: background 150ms;
+      transition: opacity 120ms, transform 120ms;
+      cursor: pointer;
     }
-    .btn:hover { background: #16a34a; text-decoration: none; }
+    .browser-btn:hover { opacity: .88; transform: translateY(-2px); }
+    .btn-chrome  { background: #fff; color: #111; }
+    .btn-edge    { background: #0078d4; color: #fff; }
+    .btn-firefox { background: #e66000; color: #fff; }
 
+    /* Screenshot */
+    .screenshot {
+      background: #f1f5f9;
+      padding: 72px 24px;
+      text-align: center;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .screenshot h2 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 28px;
+    }
+    .screenshot img {
+      max-width: min(780px, 100%);
+      border-radius: 14px;
+      box-shadow: 0 24px 64px rgba(15,23,42,.18), 0 4px 12px rgba(15,23,42,.08);
+    }
+
+    /* Story */
+    .story { padding: 88px 24px; }
+    .story-inner { max-width: 600px; margin: 0 auto; }
+    .label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ef4444;
+      margin-bottom: 16px;
+    }
+    .story h2 {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.18;
+      margin-bottom: 24px;
+    }
+    .story p { font-size: 16px; color: #4b5563; line-height: 1.85; margin-bottom: 18px; }
+    .story p:last-child { margin-bottom: 0; }
+    .story strong { color: #111; font-weight: 600; }
+
+    /* Features */
     .features {
-      background: #f9fafb;
-      padding: 64px 24px;
+      background: #f8fafc;
       border-top: 1px solid #e5e7eb;
       border-bottom: 1px solid #e5e7eb;
+      padding: 88px 24px;
     }
-    .features-inner {
-      max-width: 720px;
-      margin: 0 auto;
+    .features-inner { max-width: 900px; margin: 0 auto; }
+    .features-header { text-align: center; margin-bottom: 56px; }
+    .features-header h2 { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .features-header p { color: #6b7280; font-size: 16px; }
+    .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 40px;
+      gap: 22px;
     }
+    .feature {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 32px 26px;
+      transition: border-color 180ms, box-shadow 180ms;
+    }
+    .feature:hover { border-color: #ef4444; box-shadow: 0 6px 24px rgba(239,68,68,.09); }
+    .feature-icon { font-size: 24px; margin-bottom: 16px; line-height: 1; }
     .feature h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-    .feature p { font-size: 14px; color: #4b5563; }
+    .feature p { font-size: 14px; color: #4b5563; line-height: 1.65; }
 
+    /* Pricing */
     .pricing {
-      padding: 64px 24px;
+      background: #0f172a;
+      color: #fff;
+      padding: 88px 24px;
       text-align: center;
     }
-    .pricing h2 { font-size: 28px; font-weight: 700; margin-bottom: 40px; }
+    .pricing .label { color: #f87171; margin-bottom: 16px; }
+    .pricing h2 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+    .pricing .subtitle { color: #94a3b8; font-size: 16px; margin-bottom: 52px; }
     .plans {
-      max-width: 560px;
+      max-width: 540px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
     }
     .plan {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 28px 24px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      padding: 32px 24px;
       text-align: left;
     }
-    .plan.pro { border-color: #22c55e; }
-    .plan-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
-    .plan-price { font-size: 28px; font-weight: 800; margin-bottom: 16px; }
-    .plan-price span { font-size: 14px; font-weight: 400; color: #6b7280; }
-    .plan ul { list-style: none; font-size: 14px; color: #374151; }
-    .plan ul li { padding: 4px 0; }
-    .plan ul li::before { content: "✓ "; color: #22c55e; font-weight: 700; }
+    .plan.pro { border-color: #ef4444; background: rgba(239,68,68,.07); }
+    .pro-badge {
+      display: inline-block;
+      background: #ef4444;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .plan-name { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+    .plan-price { font-size: 40px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; margin-bottom: 8px; }
+    .plan-price span { font-size: 15px; font-weight: 400; color: #64748b; }
+    .plan-desc { font-size: 13px; color: #94a3b8; margin-bottom: 22px; }
+    .plan ul { list-style: none; }
+    .plan ul li { font-size: 14px; padding: 5px 0; display: flex; align-items: flex-start; gap: 8px; color: #cbd5e1; }
+    .plan ul li::before { content: "✓"; color: #4ade80; font-weight: 700; flex-shrink: 0; }
+    .plan.pro ul li::before { color: #f87171; }
+    .plan-cta {
+      display: block;
+      margin-top: 28px;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      transition: background 150ms;
+    }
+    .plan.pro .plan-cta { background: #ef4444; }
+    .plan.pro .plan-cta:hover { background: #dc2626; }
+    .plan-cta:hover { background: rgba(255,255,255,.18); }
 
+    /* Footer */
     footer {
       border-top: 1px solid #e5e7eb;
-      padding: 24px;
+      padding: 28px 24px;
       text-align: center;
       font-size: 13px;
-      color: #6b7280;
+      color: #9ca3af;
     }
-    footer a { color: #6b7280; }
-    footer nav { justify-content: center; margin-top: 8px; }
+    footer nav { display: flex; justify-content: center; gap: 20px; margin-top: 8px; }
+    footer a { color: #9ca3af; }
+    footer a:hover { color: #6b7280; }
+
+    @media (max-width: 500px) {
+      .plans { grid-template-columns: 1fr; }
+      .browser-buttons { flex-direction: column; align-items: center; }
+    }
   </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <div class="logo"><span>1</span>word</div>
+    <div class="logo">
+      <img src="1word.svg" alt="1word logo" />
+      <span class="logo-text"><em>1</em>word</span>
+    </div>
     <nav>
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
@@ -126,48 +248,131 @@
 </header>
 
 <section class="hero">
-  <h1>Select a word.<br><em>Know it instantly.</em></h1>
-  <p>1word gives you a short AI-powered definition the moment you highlight a word — then underlines it everywhere you browse.</p>
-  <a class="btn" href="https://chrome.google.com/webstore" target="_blank" rel="noopener">Add to Chrome — it's free</a>
+  <div class="eyebrow">Browser Extension</div>
+  <h1>Never get stuck<br>on a <em>word</em> again.</h1>
+  <p>Highlight any word. Get the definition instantly, in context. It stays saved — hover anytime on any site to bring it right back.</p>
+
+  <div class="browser-buttons">
+    <!-- Chrome -->
+    <a class="browser-btn btn-chrome" href="#" target="_blank" rel="noopener">
+      <!-- Chrome 3-segment wheel: red=top, yellow=lower-right, green=lower-left -->
+      <!-- Circle radius 10.5, center (12,12). Sector points: 240°=(6.75,2.91) 0°=(22.5,12) 120°=(6.75,21.09) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12,12 L6.75,2.91 A10.5,10.5 0 0,1 22.5,12 Z" fill="#EA4335"/>
+        <path d="M12,12 L22.5,12 A10.5,10.5 0 0,1 6.75,21.09 Z" fill="#FBBC05"/>
+        <path d="M12,12 L6.75,21.09 A10.5,10.5 0 0,1 6.75,2.91 Z" fill="#34A853"/>
+        <circle cx="12" cy="12" r="6.5" fill="white"/>
+        <circle cx="12" cy="12" r="5.5" fill="#4285F4"/>
+        <circle cx="12" cy="12" r="3.5" fill="white"/>
+      </svg>
+      Add to Chrome
+    </a>
+    <!-- Edge -->
+    <a class="browser-btn btn-edge" href="#" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 13H7.5a4.5 4.5 0 0 1 0-9A6.5 6.5 0 0 1 20 13zM7.5 17H19a8 8 0 0 1-7 4 8 8 0 0 1-8-8c0-.7.1-1.4.3-2.1.4 1.8 2 3.1 3.8 3.1H19z" fill="white"/>
+      </svg>
+      Add to Edge
+    </a>
+    <!-- Firefox -->
+    <a class="browser-btn btn-firefox" href="#" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/>
+        <path d="M12 3v18M3 12h18M5.5 5.5l13 13M18.5 5.5l-13 13" stroke="white" stroke-width="1.4" stroke-linecap="round" opacity="0.5"/>
+        <circle cx="12" cy="12" r="3.5" fill="white"/>
+      </svg>
+      Add to Firefox
+    </a>
+  </div>
+</section>
+
+<section class="screenshot">
+  <h2>See it in action</h2>
+  <img src="screenshot.png" alt="1word extension showing instant definitions for the word procurement" />
+</section>
+
+<section class="story">
+  <div class="story-inner">
+    <div class="label">Why I built this</div>
+    <h2>I was tired of Googling the same word. Again.</h2>
+    <p>
+      I was reading an article and kept stumbling over the word <strong>"procurement"</strong>.
+      I roughly knew what it meant — but not quite. So I did what I always did: copy the word,
+      open a new tab, type "procurement explain", read the result, close the tab, scroll back to find
+      my place. Every. Single. Time.
+    </p>
+    <p>
+      I thought — there has to be a better way. Highlight the word once, see what it means.
+      Then the next time you see it on any website, just hover over it and instantly remember.
+      No new tabs. No losing your place. No repetition.
+    </p>
+    <p>
+      I built 1word for myself, and I kept it simple on purpose. I hate apps packed with
+      a hundred features you never use. This does one thing — makes sure you never get
+      stuck on a word again.
+    </p>
+  </div>
 </section>
 
 <section class="features">
   <div class="features-inner">
-    <div class="feature">
-      <h3>Instant definitions</h3>
-      <p>Highlight any word on any page. A concise definition appears in under a second.</p>
+    <div class="features-header">
+      <div class="label">What it does</div>
+      <h2>Simple by design.</h2>
+      <p>Four things. That's all you need.</p>
     </div>
-    <div class="feature">
-      <h3>Persistent underlines</h3>
-      <p>Words you look up get underlined across the web so you never forget them.</p>
-    </div>
-    <div class="feature">
-      <h3>Your word library</h3>
-      <p>Every word you define is saved. Search and review your vocabulary any time from the popup.</p>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant definition</h3>
+        <p>Highlight any word on any page and get a clear, context-aware definition in under a second.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">◉</div>
+        <h3>Hover to remember</h3>
+        <p>Saved words stay underlined across the web. Hover anytime to bring the definition back — no re-searching needed.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📚</div>
+        <h3>Your word library</h3>
+        <p>Every word you look up is saved automatically. Review your vocabulary from the popup anytime.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">↺</div>
+        <h3>Clear and start over</h3>
+        <p>Want a clean slate? Clear your history in one click and start fresh whenever you like.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="pricing">
-  <h2>Simple pricing</h2>
+  <div class="label">Pricing</div>
+  <h2>Pick your plan</h2>
+  <p class="subtitle">Start free. Upgrade when you're ready.</p>
   <div class="plans">
     <div class="plan">
       <div class="plan-name">Free</div>
       <div class="plan-price">€0 <span>/ mo</span></div>
+      <div class="plan-desc">Perfect for trying it out.</div>
       <ul>
         <li>10 lookups / month</li>
         <li>Word library</li>
         <li>Underline highlighting</li>
       </ul>
+      <a class="plan-cta" href="#">Get started free</a>
     </div>
     <div class="plan pro">
+      <div class="pro-badge">Most popular</div>
       <div class="plan-name">Pro</div>
       <div class="plan-price">€5 <span>/ mo</span></div>
+      <div class="plan-desc">For daily readers and learners.</div>
       <ul>
         <li>1,000 lookups / month</li>
         <li>Word library</li>
         <li>Underline highlighting</li>
       </ul>
+      <a class="plan-cta" href="#">Get Pro</a>
     </div>
   </div>
 </section>
@@ -175,7 +380,7 @@
 <footer>
   <div>© 2026 1word. All rights reserved.</div>
   <nav>
-    <a href="privacy.html">Privacy Policy</a> &nbsp;·&nbsp;
+    <a href="privacy.html">Privacy Policy</a>
     <a href="terms.html">Terms of Service</a>
   </nav>
 </footer>
