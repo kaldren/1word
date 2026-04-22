@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "1word",
+  "name": "1word — Stop forgetting what words mean",
   "description": "Select a word, get an AI-powered short definition, and see saved words highlighted across the web.",
   "version": "1.0.0",
   "icons": {
@@ -12,7 +12,7 @@
   },
   "action": {
     "default_popup": "src/popup/popup.html",
-    "default_title": "1word",
+    "default_title": "1word — Stop forgetting what words mean",
     "default_icon": {
       "16": "16.png",
       "32": "32.png",
