@@ -1,8 +1,8 @@
-export type Tier = "free" | "pro";
+export type Tier = 'free' | 'pro';
 
 export const TIER_LIMITS: Record<Tier, number> = {
   free: 10,
-  pro: 2000,
+  pro: 1000,
 };
 
 export interface Definition {
@@ -42,10 +42,15 @@ export interface DefineRequest {
 }
 
 export type DefineResponse =
-  | { ok: true; sense: WordSense | null; allSenses: WordSense[]; usage: UsageStatus }
-  | { ok: false; reason: "quota_exceeded"; usage: UsageStatus }
-  | { ok: false; reason: "not_a_word" }
-  | { ok: false; reason: "invalid_input" };
+  | {
+      ok: true;
+      sense: WordSense | null;
+      allSenses: WordSense[];
+      usage: UsageStatus;
+    }
+  | { ok: false; reason: 'quota_exceeded'; usage: UsageStatus }
+  | { ok: false; reason: 'not_a_word' }
+  | { ok: false; reason: 'invalid_input' };
 
 export interface AuthGoogleRequest {
   idToken: string;

@@ -136,7 +136,7 @@ function QuotaBanner({
       <div style={{ fontSize: 12, marginTop: 4, color: '#7f1d1d' }}>
         You've used all {usage.limit} lookups this month. Resets {resetLabel}{' '}
         (UTC).
-        {isFree && ' Upgrade to Pro for 2,000 lookups/month.'}
+        {isFree && ' Upgrade to Pro for 1,000 lookups/month.'}
       </div>
       {isFree && (
         <button
@@ -183,7 +183,11 @@ const WordRow = memo(function WordRow({
   const toggleExpand = useCallback(async () => {
     if (!expanded && senses === null) {
       setLoadingSenses(true);
-      const res = await send({ type: 'getSenses', word: word.word, language: word.language });
+      const res = await send({
+        type: 'getSenses',
+        word: word.word,
+        language: word.language,
+      });
       setLoadingSenses(false);
       if (res.type === 'senses') setSenses(res.senses);
     }
@@ -203,12 +207,16 @@ const WordRow = memo(function WordRow({
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
             <span style={{ fontWeight: 600 }}>{word.word}</span>
             {word.definition.partOfSpeech && (
-              <span style={{ fontStyle: 'italic', color: '#9ca3af', fontSize: 11 }}>
+              <span
+                style={{ fontStyle: 'italic', color: '#9ca3af', fontSize: 11 }}
+              >
                 {word.definition.partOfSpeech}
               </span>
             )}
           </div>
-          <div style={{ color: '#333', fontSize: 13 }}>{word.definition.summary}</div>
+          <div style={{ color: '#333', fontSize: 13 }}>
+            {word.definition.summary}
+          </div>
         </div>
         <button
           type='button'
@@ -244,7 +252,13 @@ const WordRow = memo(function WordRow({
             <li key={s.senseIndex} style={{ marginBottom: 3 }}>
               <span>{s.summary}</span>
               {s.partOfSpeech && (
-                <span style={{ fontStyle: 'italic', color: '#9ca3af', marginLeft: 4 }}>
+                <span
+                  style={{
+                    fontStyle: 'italic',
+                    color: '#9ca3af',
+                    marginLeft: 4,
+                  }}
+                >
                   {s.partOfSpeech}
                 </span>
               )}
@@ -360,12 +374,12 @@ function HighlightToggle() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    void chrome.storage.local
-      .get(STORAGE_KEYS.highlightEnabled)
-      .then((res) => {
-        setEnabled((res[STORAGE_KEYS.highlightEnabled] as boolean | undefined) ?? false);
-        setLoaded(true);
-      });
+    void chrome.storage.local.get(STORAGE_KEYS.highlightEnabled).then((res) => {
+      setEnabled(
+        (res[STORAGE_KEYS.highlightEnabled] as boolean | undefined) ?? false,
+      );
+      setLoaded(true);
+    });
   }, []);
 
   const toggle = useCallback(() => {
