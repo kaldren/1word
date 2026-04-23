@@ -152,14 +152,14 @@ jobs:
           zip -r "../../1word-firefox-${{ env.NEW_VERSION }}.zip" .
 
       - name: Upload Chrome artifact
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: 1word-chrome-${{ env.NEW_VERSION }}
           path: 1word-chrome-${{ env.NEW_VERSION }}.zip
           retention-days: 7
 
       - name: Upload Firefox artifact
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: 1word-firefox-${{ env.NEW_VERSION }}
           path: 1word-firefox-${{ env.NEW_VERSION }}.zip
