@@ -1,6 +1,5 @@
 {
   "manifest_version": 3,
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApsGnN6XnroctJ14avis8jLKwm9YBi/mXrMNWokJ8ye/6uhup9zKqmn0H8FqUSEkBjchtMpyxQtYhrpGX3pyuVIwHvMNVK9ae1600nGICjSwmf8IerC/UthsH8pEit4nDWLxmrcbXGWLrZgrIh6mrTOpIBS+2p5Gr+MHI0ecfBnsTi6VqmS61iLTAkWkahreWGzotZneIIgvsb55md2vKCJDxLeAGlLzd+itZqvbqtSknmhcmjtXArzFMHJNv/YOZugMgMrjm7KxWTXK9+NeIJfVByMs/fPjPZ/xgt/XG16O0qKpOERd/Wrb6hyBdapTpX6a4lMVTTDUH5Ms9yfNkIQIDAQAB",
   "name": "1word — Never get stuck on a word again",
   "description": "Select a word, get an AI-powered short definition, and see saved words highlighted across the web.",
   "version": "1.0.0",
