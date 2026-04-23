@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # Keep GitHub Actions SHAs current — opens a weekly PR per outdated action
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+
+  # Keep npm dependencies current across all workspaces
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+    groups:
+      # Batch minor/patch updates together to reduce PR noise
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
