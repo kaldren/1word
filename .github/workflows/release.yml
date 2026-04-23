@@ -32,7 +32,7 @@ jobs:
     needs: [security]
     runs-on: ubuntu-24.04
     permissions:
-      contents: write # push the bump commit
+      contents: write
 
     outputs:
       new_version: ${{ steps.bump.outputs.new_version }}
@@ -115,7 +115,7 @@ jobs:
       - name: Checkout (post-bump commit)
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          ref: main # pick up the bump commit just pushed
+          ref: main
 
       - name: Setup Node.js 20
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
@@ -165,16 +165,17 @@ jobs:
           path: 1word-firefox-${{ env.NEW_VERSION }}.zip
           retention-days: 7
 
-  # ── 3. Create draft GitHub Release with both zips attached ──────────────────
+  # ── 3. Tag and create draft GitHub Release with zips attached ────────────────
   release:
     name: Create GitHub Release
     needs: [bump-version, build]
     runs-on: ubuntu-24.04
     permissions:
-      contents: write # create releases, push tags
+      contents: write
 
     env:
       NEW_VERSION: ${{ needs.bump-version.outputs.new_version }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout (for tagging)
@@ -200,24 +201,21 @@ jobs:
           git tag "v${{ env.NEW_VERSION }}"
           git push origin "v${{ env.NEW_VERSION }}"
 
+      # gh CLI is pre-installed on GitHub-hosted runners
       - name: Create draft Release
-        uses: softprops/action-gh-release@c062e08bd532815e2082a7e09ce9571a6d0f2e98 # v2.2.1
-        with:
-          tag_name: v${{ env.NEW_VERSION }}
-          name: v${{ env.NEW_VERSION }}
-          draft: true # review and publish manually; artifacts are already attached
-          prerelease: false
-          body: |
-            ## What's new in v${{ env.NEW_VERSION }}
+        run: |
+          gh release create "v${{ env.NEW_VERSION }}" \
+            --title "v${{ env.NEW_VERSION }}" \
+            --draft \
+            --notes "## What's new in v${{ env.NEW_VERSION }}
 
-            <!-- Add release notes here before publishing -->
+          <!-- Add release notes here before publishing -->
 
-            ### Store uploads
-            Upload the zips below to the browser stores:
-            | Browser | File |
-            |---------|------|
-            | Chrome / Edge | `1word-chrome-${{ env.NEW_VERSION }}.zip` |
-            | Firefox | `1word-firefox-${{ env.NEW_VERSION }}.zip` |
-          files: |
-            1word-chrome-${{ env.NEW_VERSION }}.zip
-            1word-firefox-${{ env.NEW_VERSION }}.zip
+          ### Store uploads
+          Upload the zips below to the browser stores:
+          | Browser | File |
+          |---------|------|
+          | Chrome / Edge | \`1word-chrome-${{ env.NEW_VERSION }}.zip\` |
+          | Firefox | \`1word-firefox-${{ env.NEW_VERSION }}.zip\` |" \
+            "1word-chrome-${{ env.NEW_VERSION }}.zip" \
+            "1word-firefox-${{ env.NEW_VERSION }}.zip"

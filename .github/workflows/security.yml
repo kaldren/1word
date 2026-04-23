@@ -8,29 +8,55 @@ on:
   workflow_call: # allows release.yml to call this as a required gate
 
 jobs:
-  # ── Secret scanning ──────────────────────────────────────────────────────────
+  # ── Secret scanning (native grep — no external action) ───────────────────────
   secret-scan:
-    name: TruffleHog secret scan
+    name: Secret scan
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      id-token: none
 
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          fetch-depth: 0 # full history needed for diff mode
+          fetch-depth: 0
 
-      - name: TruffleHog scan
-        # On PR: scan commits added by this PR vs base branch
-        # On push: scan commits since previous SHA
-        # On workflow_call (from release): base/head empty → scans full repo
-        uses: trufflesecurity/trufflehog@6f84c70c04c6bb1df7e3b2fc56ebea8c45d1cfb1 # v3.88.27
-        with:
-          base: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || (github.event_name == 'push' && github.event.before || '') }}
-          head: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || (github.event_name == 'push' && github.event.after || '') }}
-          extra_args: --only-verified
+      - name: Scan diff for hardcoded secrets
+        run: |
+          # Determine the range of new lines to scan
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            DIFF=$(git diff "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" \
+              -- . ':(exclude)package-lock.json' | grep '^+' | grep -v '^+++')
+          elif [ "${{ github.event_name }}" = "push" ] && \
+               [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            DIFF=$(git diff "${{ github.event.before }}" "${{ github.event.after }}" \
+              -- . ':(exclude)package-lock.json' | grep '^+' | grep -v '^+++')
+          else
+            # Initial push or workflow_call: scan the latest commit
+            DIFF=$(git show HEAD -- . ':(exclude)package-lock.json' | grep '^+' | grep -v '^+++')
+          fi
+
+          FOUND=0
+          check() {
+            if echo "$DIFF" | grep -qiE "$1"; then
+              echo "ALERT: possible $2 detected"
+              FOUND=1
+            fi
+          }
+
+          check 'AKIA[0-9A-Z]{16}'                           'AWS access key'
+          check 'sk-[a-zA-Z0-9]{48}'                         'OpenAI API key'
+          check '(sk|pk)_(live|test)_[a-zA-Z0-9]+'          'Stripe key'
+          check 'ghp_[a-zA-Z0-9]{36}'                        'GitHub PAT'
+          check 'whsec_[a-zA-Z0-9]+'                         'Stripe webhook secret'
+          check '-----BEGIN (RSA|EC|DSA|OPENSSH) PRIVATE KEY' 'private key'
+          check 'jwt[_-]?secret\s*[=:]\s*["\x27][^\x22\x27]{16,}' 'JWT secret'
+
+          if [ "$FOUND" -eq 1 ]; then
+            echo "Secret scanning found potential secrets — please review the diff."
+            exit 1
+          fi
+          echo "No secrets detected."
 
   # ── Dependency vulnerability audit ──────────────────────────────────────────
   audit:
@@ -38,7 +64,6 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      id-token: none
 
     steps:
       - name: Checkout
@@ -57,7 +82,7 @@ jobs:
       - name: Run npm audit
         run: npm audit --audit-level=high
 
-  # ── SAST — CodeQL ────────────────────────────────────────────────────────────
+  # ── SAST — CodeQL (GitHub's own action) ─────────────────────────────────────
   codeql:
     name: CodeQL SAST
     runs-on: ubuntu-24.04
@@ -69,7 +94,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          fetch-depth: 0 # CodeQL dataflow analysis needs full history
+          fetch-depth: 0
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@4f3212b61783c3c68e8309a0f18a699764811cda # v3.27.9
