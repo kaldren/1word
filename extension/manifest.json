@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "1word — Never get stuck on a word again",
   "description": "Select a word, get an AI-powered short definition, and see saved words highlighted across the web.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "icons": {
     "16": "16.png",
     "32": "32.png",
